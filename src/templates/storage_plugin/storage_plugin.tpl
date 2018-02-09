@@ -18,6 +18,7 @@ td,th {
     <p>
     Here you can setup where your persistent data should be stored. If you want to use Nextcloud, LXC or other IO intensive applications, don't put them on internal flash, but always use external storage.
     </p>
+    <p>Current device in use is {{ settings['old_device'].replace("/dev/","") }}</p>
     <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
     <input type="hidden" name="uuid" value="{{ settings['uuid'] }}">
     <input type="hidden" name="old_uuid" value="{{ settings['old_uuid'] }}">
