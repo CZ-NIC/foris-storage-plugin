@@ -26,7 +26,7 @@ class StoragePluginConfigHandler(BaseConfigHandler):
 
 
 class StoragePluginPage(ConfigPageMixin, StoragePluginConfigHandler):
-    menu_order = 1
+    menu_order = 60
     template = "storage_plugin/storage_plugin.tpl"
     userfriendly_title = gettext("Storage")
 
