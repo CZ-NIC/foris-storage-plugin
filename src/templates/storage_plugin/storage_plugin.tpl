@@ -18,7 +18,12 @@ td,th {
     <p>
     Here you can setup where your persistent data should be stored. If you want to use Nextcloud, LXC or other IO intensive applications, don't put them on internal flash, but always use external storage.
     </p>
-    <p>Current device in use is {{ settings['old_device'].replace("/dev/","") }}</p>
+    <p>
+    Device currently in use is {{ settings['old_device'].replace("/dev/","") }}.
+    %if settings['formating']:
+    Processing changes at the moment, please wait...
+    %end
+    </p>
     <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
     <input type="hidden" name="uuid" value="{{ settings['uuid'] }}">
     <input type="hidden" name="old_uuid" value="{{ settings['old_uuid'] }}">
@@ -58,9 +63,14 @@ td,th {
 $(document).ready(function() {
     $("[name=new_disk]").val(["{{ settings['old_device'].replace("/dev/","") }}"]);
     %for drv in drives:
-        %if 'uuid' in drv and drv['uuid'] == settings['uuid']:
+        %if 'uuid' in drv and drv['uuid'] == settings['uuid'] and settings['uuid']:
     $("[name=new_disk]").val(["{{ drv['dev'] }}"]);
         %end
+    %end
+    %if settings['formating']:
+    $("[name=new_disk]").prop('disabled', true);
+    $("[name=send]").prop('disabled', true);
+    setInterval(function() { location.reload(); }, 10000);
     %end
     $('#storage-form').submit(function() {
         var c = confirm("{{ trans("Are you sure you want to change where your srv is stored? Newly selected drive will be formated and you will loose all the data on it. Once formating is done, you'll get notification and you will be asked to reboot. On the reboot data will be moved from old drive to the new one. This can take some time so your next reboot will take longer. Are you sure you want to continue?") }}");
