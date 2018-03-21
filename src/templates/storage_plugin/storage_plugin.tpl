@@ -16,7 +16,7 @@ td,th {
 
 <form action="{{ request.fullpath }}" id="storage-form" method="post" class="config-form">
     <p>
-    Here you can setup where your persistent data should be stored. If you want to use Nextcloud, LXC or other IO intensive applications, don't put them on internal flash, but always use external storage.
+    Here you can setup where your persistent data should be stored. If you want to use Nextcloud, LXC or other IO intensive applications, don't put them on internal flash, but always use external storage. Also make sure that your data will fit on the new drive before switching.
     </p>
     <p>
     Device currently in use is {{ settings['old_device'].replace("/dev/","") }}.
@@ -24,6 +24,7 @@ td,th {
     Processing changes at the moment, please wait...
     %end
     </p>
+    %if drives:
     <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
     <input type="hidden" name="uuid" value="{{ settings['uuid'] }}">
     <input type="hidden" name="old_uuid" value="{{ settings['old_uuid'] }}">
@@ -55,6 +56,9 @@ td,th {
     Changes to this setting will take effect on next reboot!
     </p>
     <button type="submit" name="send" class="button">{{ trans("Save") }}</button>
+    %else:
+    <p>No drives connected, please connect a drive and refresh the page.</p>
+    %end
 </form>
 
 </div>
