@@ -19,9 +19,10 @@ td,th {
     Here you can setup where your persistent data should be stored. If you want to use Nextcloud, LXC or other IO intensive applications, don't put them on internal flash, but always use external storage. Also make sure that your data will fit on the new drive before switching.
     </p>
     <p>
-    Device currently in use is {{ settings['old_device'].replace("/dev/","") }}.
+    Device currently in use is {{ settings['old_device'].replace("/dev/","") }}
+    {{ settings['old_uuid'] == 'rootfs' if '(internal flash)' else '(uuid: {})'.format(settings['old_uuid']) }}.
     %if settings['formating']:
-    Processing changes at the moment, please wait...
+    <br/>Processing changes at the moment, please wait...
     %end
     </p>
     %if drives:
