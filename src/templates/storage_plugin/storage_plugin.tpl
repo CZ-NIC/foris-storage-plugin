@@ -20,7 +20,11 @@ td,th {
     </p>
     <p>
     Device currently in use is {{ settings['old_device'].replace("/dev/","") }}
-    {{ settings['old_uuid'] == 'rootfs' if '(internal flash)' else '(uuid: {})'.format(settings['old_uuid']) }}.
+    %if settings['old_uuid'] == 'rootfs':
+    (internal flash).
+    %else:
+    {{ '(uuid: {})'.format(settings['old_uuid']) }}.
+    %end
     %if settings['formating']:
     <br/>Processing changes at the moment, please wait...
     %end
