@@ -16,19 +16,20 @@ td,th {
 
 <form action="{{ request.fullpath }}" id="storage-form" method="post" class="config-form">
     <p>
-    Here you can setup where your persistent data should be stored. If you want to use Nextcloud, LXC or other IO intensive applications, don't put them on internal flash, but always use external storage. Also make sure that your data will fit on the new drive before switching.
+    {{ trans("Here you can setup where your persistent data should be stored. If you want to use Nextcloud, LXC or other IO intensive applications, don't put them on internal flash, but always use external storage. Also make sure that your data will fit on the new drive before switching.") }}
     </p>
     <p>
-    Device currently in use is {{ settings['old_device'].replace("/dev/","") }}
-    %if settings['old_uuid'] == 'rootfs':
-    (internal flash).
-    %else:
-    {{ '(uuid: {})'.format(settings['old_uuid']) }}.
-    %end
-    %if settings['formating']:
-    <br/>Processing changes at the moment, please wait...
-    %end
+    {{ trans("Once you choose a drive, it will be formatted to Ext4 filesystem and on next reboot your <em>/srv</em> (directory where all IO intesive applications should reisde) will get moved to this new drive." }}
     </p>
+    </p>
+    <p>
+    {{ trans("Device currently in use is {} ({}).").format(settings['old_device'].replace("/dev/",""), settings['old_uuid'] == 'rootfs' and '(internal flash)' or '(uuid: {})'.format(settings['old_uuid']) }}
+    </p>
+    %if settings['formating']:
+    <p>
+    {{ trans("Processing changes at the moment, please wait...") }}
+    </p>
+    %end
     %if drives:
     <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
     <input type="hidden" name="uuid" value="{{ settings['uuid'] }}">
@@ -58,11 +59,11 @@ td,th {
     </table>
     <br />
     <p>
-    Changes to this setting will take effect on next reboot!
+    {{ trans("Changes to this setting will take effect on next reboot!") }}
     </p>
-    <button type="submit" name="send" class="button">{{ trans("Save") }}</button>
+    <button type="submit" name="send" class="button">{{ trans("Format & Set") }}</button>
     %else:
-    <p>No drives connected, please connect a drive and refresh the page.</p>
+    <p>{{ trans("No drives connected, please connect a drive and refresh the page.") }}</p>
     %end
 </form>
 
