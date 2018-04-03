@@ -5,6 +5,12 @@
 td,th {
     padding: 5px;
 }
+th {
+    font-weight: bold;
+}
+tbody tr:hover {
+    background-color: #f2f2f2;
+}
 </style>
 
 <div id="page-sample-plugin" class="config-page">
@@ -38,7 +44,7 @@ td,th {
         <tbody>
             %for drv in sorted(drives, key=lambda d: d['dev']):
                 %if "/dev/{}".format(drv['dev']) == settings['old_device']:
-            <tr class="button" style="display: table-row;">
+            <tr class="button" style="display: table-row; height: 1em; line-height: 1em;">
                 %else:
             <tr>
                 %end
