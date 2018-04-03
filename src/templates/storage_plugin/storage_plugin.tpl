@@ -21,7 +21,7 @@ tbody tr:hover {
     {{ trans("Here you can setup where your persistent data should be stored. If you want to use Nextcloud, LXC or other IO intensive applications, don't put them on internal flash, but always use external storage. Also make sure that your data will fit on the new drive before switching.") }}
     </p>
     <p>
-    {{ trans("Once you choose a drive, it will be formatted to Ext4 filesystem and on next reboot your <em>/srv</em> (directory where all IO intesive applications should reisde) will get moved to this new drive.") }}
+    {{! trans("Once you choose a drive, it will be formatted to Ext4 filesystem and on next reboot your <em>/srv</em> (directory where all IO intesive applications should reisde) will get moved to this new drive.") }}
     </p>
     </p>
     <p>
@@ -85,7 +85,7 @@ $(document).ready(function() {
     setInterval(function() { location.reload(); }, 10000);
     %end
     $('#storage-form').submit(function() {
-        var c = confirm("{{ trans("Are you sure you want to change where your srv is stored? Newly selected drive will be formated and you will loose all the data on it. Once formating is done, you'll get notification and you will be asked to reboot. On the reboot data will be moved from old drive to the new one. This can take some time so your next reboot will take longer. Are you sure you want to continue?") }}");
+        var c = confirm("{{! trans("Are you sure you want to change where your srv is stored? Newly selected drive will be formated and you will loose all the data on it. Once formating is done, you'll get notification and you will be asked to reboot. On the reboot data will be moved from old drive to the new one. This can take some time so your next reboot will take longer. Are you sure you want to continue?") }}");
         return c;
     });
 });
