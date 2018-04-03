@@ -5,10 +5,6 @@
 td,th {
     padding: 5px;
 }
-.current {
-    background-color: #00a2e2;
-    color: white;
-}
 </style>
 
 <div id="page-sample-plugin" class="config-page">
@@ -42,7 +38,7 @@ td,th {
         <tbody>
             %for drv in sorted(drives, key=lambda d: d['dev']):
                 %if "/dev/{}".format(drv['dev']) == settings['old_device']:
-            <tr class="current">
+            <tr class="button" style="display: table-row;">
                 %else:
             <tr>
                 %end
