@@ -25,7 +25,7 @@ tbody tr:hover {
     </p>
     </p>
     <p>
-    {{ trans("Device currently in use is {} ({}).").format(settings['old_device'].replace("/dev/",""), settings['old_uuid'] == 'rootfs' and '(internal flash)' or '(uuid: {})'.format(settings['old_uuid'])) }}
+    {{ trans("Device currently in use is {} ({}).").format(settings['old_device'].replace("/dev/",""), settings['old_uuid'] == 'rootfs' and 'internal flash' or 'uuid: {}'.format(settings['old_uuid'])) }}
     </p>
     %if settings['formating']:
     <p>
@@ -46,7 +46,7 @@ tbody tr:hover {
                 %if "/dev/{}".format(drv['dev']) == settings['old_device']:
             <tr class="button" style="display: table-row; height: 1em; line-height: 1em;">
                 %else:
-            <tr>
+            <tr onClick='$("input[name=new_disk]").val(["{{ drv['dev']  }}"]);'>
                 %end
                 <td>
                     <input type="radio" name="new_disk" value="{{ drv['dev'] }}"/>
