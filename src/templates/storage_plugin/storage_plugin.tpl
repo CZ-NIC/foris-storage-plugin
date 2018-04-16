@@ -24,9 +24,11 @@ tbody tr:hover {
     {{! trans("Once you choose a drive, it will be formatted to Ext4 filesystem and on next reboot your <em>/srv</em> (directory where all IO intesive applications should reisde) will get moved to this new drive.") }}
     </p>
     </p>
-    <p>
+    <span id="test-results">
+    <p class="{{! settings['old_uuid'] == 'rootfs' and 'result test-fail' or 'result test-success' }}">
     {{ trans("Device currently in use is {} ({}).").format(settings['old_device'].replace("/dev/",""), settings['old_uuid'] == 'rootfs' and 'internal flash' or 'uuid: {}'.format(settings['old_uuid'])) }}
     </p>
+    </span>
     %if settings['formating']:
     <p>
     {{ trans("Processing changes at the moment, please wait...") }}
