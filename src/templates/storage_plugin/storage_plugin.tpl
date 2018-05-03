@@ -81,9 +81,10 @@ $(document).ready(function() {
     $("[name=new_disk]").val(["{{ drv['dev'] }}"]);
         %end
     %end
+    $("[name=send]").prop('disabled', true);
+    $("[name=new_disk]").change(function() { $("[name=send]").prop('disabled', false); });
     %if settings['formating']:
     $("[name=new_disk]").prop('disabled', true);
-    $("[name=send]").prop('disabled', true);
     setInterval(function() { location.reload(); }, 10000);
     %end
     $('#storage-form').submit(function() {
