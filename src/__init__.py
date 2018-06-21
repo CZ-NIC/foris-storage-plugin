@@ -31,8 +31,8 @@ class StoragePluginPage(ConfigPageMixin, StoragePluginConfigHandler):
     userfriendly_title = gettext("Storage")
 
     def render(self, **kwargs):
-        kwargs['settings'] = current_state.backend.perform("storage", "get_settings", {})
-        tmp = current_state.backend.perform("storage", "get_drives", {})
+        kwargs['settings'] = current_state.backend.perform("storage", "get_settings")
+        tmp = current_state.backend.perform("storage", "get_drives")
         if not tmp:
             tmp = { "drives": []}
         kwargs['drives'] = tmp['drives']
