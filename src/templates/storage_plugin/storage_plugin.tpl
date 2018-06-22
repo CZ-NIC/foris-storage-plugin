@@ -48,7 +48,7 @@ tbody tr:hover {
                 %if "/dev/{}".format(drv['dev']) == settings['old_device']:
             <tr class="button" style="display: table-row; height: 1em; line-height: 1em;">
                 %else:
-            <tr onClick='$("input[name=new_disk]").val(["{{ drv['dev']  }}"]);'>
+            <tr onClick='$("input[name=new_disk]").val(["{{ drv['dev']  }}"]).change();'>
                 %end
                 <td>
                     <input type="radio" name="new_disk" value="{{ drv['dev'] }}"/>
