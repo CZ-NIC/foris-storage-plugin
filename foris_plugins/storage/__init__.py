@@ -26,8 +26,9 @@ class StoragePluginConfigHandler(BaseConfigHandler):
 
 
 class StoragePluginPage(ConfigPageMixin, StoragePluginConfigHandler):
+    slug = "storage"
     menu_order = 60
-    template = "storage_plugin/storage_plugin"
+    template = "storage/storage"
     template_type = "jinja2"
     userfriendly_title = gettext("Storage")
 
@@ -41,7 +42,7 @@ class StoragePluginPage(ConfigPageMixin, StoragePluginConfigHandler):
 
 
 class StoragePlugin(ForisPlugin):
-    PLUGIN_NAME = "storage_plugin"
+    PLUGIN_NAME = "storage"
     DIRNAME = os.path.dirname(os.path.abspath(__file__))
 
     PLUGIN_STYLES = [
@@ -54,4 +55,4 @@ class StoragePlugin(ForisPlugin):
 
     def __init__(self, app):
         super(StoragePlugin, self).__init__(app)
-        add_config_page("storage_plugin", StoragePluginPage, top_level=True)
+        add_config_page(StoragePluginPage)
