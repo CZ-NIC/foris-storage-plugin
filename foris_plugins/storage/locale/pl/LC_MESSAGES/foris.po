@@ -1,0 +1,78 @@
+# Translations template for Foris Storage Plugin.
+# Copyright (C) 2018 ORGANIZATION
+# This file is distributed under the same license as the Foris Storage
+# Plugin project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Foris Storage Plugin 1\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2018-06-28 17:16+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+msgid "storage"
+msgstr ""
+
+msgid "Storage"
+msgstr ""
+
+msgid ""
+"Here you can setup where your persistent data should be stored. If you "
+"want to use Nextcloud, LXC or other IO intensive applications, don't put "
+"them on internal flash, but always use external storage. Also make sure "
+"that your data will fit on the new drive before switching."
+msgstr ""
+
+msgid ""
+"Once you choose a drive, it will be formatted to Btrfs filesystem and on "
+"next reboot your <em>/srv</em> (directory where all IO intesive "
+"applications should reisde) will get moved to this new drive."
+msgstr ""
+
+#, python-format
+msgid ""
+"\n"
+"        Device currently in use is %(old_device_name)s (%(uuid_text)s).\n"
+"        "
+msgstr ""
+
+msgid "Processing changes at the moment, please wait..."
+msgstr ""
+
+msgid "Device"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Filesystem"
+msgstr ""
+
+msgid "UUID"
+msgstr ""
+
+msgid "Changes to this setting will take effect on next reboot!"
+msgstr ""
+
+msgid "Format &amp; Set"
+msgstr ""
+
+msgid "No drives connected, please connect a drive and refresh the page."
+msgstr ""
+
+msgid ""
+"Are you sure you want to change where your srv is stored? Newly selected "
+"drive will be formated and you will loose all the data on it. Once "
+"formating is done, you'll get notification and you will be asked to "
+"reboot. On the reboot data will be moved from old drive to the new one. "
+"This can take some time so your next reboot will take longer. Are you "
+"sure you want to continue?"
+msgstr ""
