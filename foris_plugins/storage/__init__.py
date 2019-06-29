@@ -1,4 +1,6 @@
 import os
+import bottle
+import json
 
 from foris import fapi
 
@@ -40,6 +42,22 @@ class StoragePluginPage(ConfigPageMixin, StoragePluginConfigHandler):
         kwargs['drives'] = sorted(drives, key=lambda d: d['dev'])
         return super(StoragePluginPage, self).render(**kwargs)
 
+    def call_ajax_action(self, action):
+        if action == "configure_nextcloud":
+            if bottle.request.method != 'POST':
+                raise bottle.HTTPError(404, "Wrong http method (only POST is allowed.")
+
+            data = bottle.request.POST.get('credentials', {})
+            data = current_state.backend.perform("storage", "configure_nextcloud", credentials)
+            return data
+        elif action == 'get_settings':
+            if bottle.request.method != 'GET':
+                raise bottle.HTTPError(404, "Wrong http method (only GET is allowed.")
+
+            data = current_state.backend.perform("storage", "get_settings")
+            return data
+
+        raise ValueError("Unknown AJAX action.")
 
 class StoragePlugin(ForisPlugin):
     PLUGIN_NAME = "storage"

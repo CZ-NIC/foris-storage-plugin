@@ -11,6 +11,9 @@
     <p>
     {% trans %}Once you choose a drive, it will be formatted to Btrfs filesystem and on next reboot your <em>/srv</em> (directory where all IO intesive applications should reisde) will get moved to this new drive.{% endtrans %}
     </p>
+    <p>
+    {% trans %}Currently only one drive is supported, but in the future it will be possible to extend it to more drives to provide raid functionality. This operation will be possible without loosing any data.{% endtrans %}
+    </p>
     <span id="test-results">
     {% if settings['old_uuid'] == 'rootfs' %}
     <p class="result test-fail">
@@ -62,15 +65,81 @@
     <p>
     {% trans %}Changes to this setting will take effect on next reboot!{% endtrans %}
     </p>
-    <button type="submit" name="send" class="button">{% trans %}Format &amp; Set{% endtrans %}</button>
+    <button type="submit" name="send" class="button" style="float:right;">{% trans %}Format &amp; Set{% endtrans %}</button>
     {% else %}
     <p>{% trans %}No drives connected, please connect a drive and refresh the page.{% endtrans %}</p>
     {% endif %}
 </form>
 
+{% if settings['nextcloud_installed'] %}
+<h2>Nextcloud</h2>
+
+<p>{% trans %}Nextcloud puts your data at your fingertips, under your control. Store your documents, calendar, contacts and photos on a server at home.{% endtrans %}</p>
+
+{% if settings['nextcloud_configured']  %}
+{% if settings['nextcloud_configuring'] %}
+<p>{% trans %}Your configuration process is already running, please wait.{% endtrans %}</p>
+{% else %}
+<p>{% trans %}You already configured your Nextcloud, you can <a href="/nextcloud/">visit the site</a>.{% endtrans %}</p>
+{% endif %}
+{% else %}
+<p>{% trans %}You still need to configure your Nextcloud, please set your admin credentials bellow:{% endtrans %}</p>
+<table>
+<tr><td style="background: white;">
+{% trans %}Login:{% endtrans %}
+</td><td style="background: white;">
+    <input id="nextcloud-login" type="text"/><br/>
+</td></tr><tr><td style="background: white;">
+{% trans %}Password:{% endtrans %}
+</td><td style="background: white;">
+<input id="nextcloud-pass" type="password"/><br/>
+</td></tr><tr><td></td><td style="background: white;">
+<input id="setup-nextcloud" class="button" onClick="setup_nextcloud();" type="submit" style="width: 100%;" value="{% trans %}Setup{% endtrans %}"/>
+</td></tr>
+</table>
+
+{% endif %}
+{% endif %}
+
 </div>
 
 <script>
+var csrf_token = '{{ get_csrf_token() }}';
+var ajax_url = '{{ url("config_ajax", page_name="storage") }}';
+
+function wait_for_nextcloud() {
+    setInterval(function() {
+        $.ajax({
+           type: "GET",
+           url: ajax_url + '?action=get_settings',
+           contentType: "application/json; charset=utf-8",
+           dataType: "json",
+           success: function(data) {
+               console.log(data);
+               if(!data['nextcloud_configuring'] && data['nextcloud_configured']) {
+                   location.reload();
+               }
+           }
+        })
+    }, 1000);
+}
+
+function setup_nextcloud() {
+    $('#setup-nextcloud').prop('disabled', true);
+    Foris.SpinnerDisplay('{% trans %}Setting up your Nextcloud, please wait...{% endtrans %}');
+    login = $('#nextcloud-login').val()
+    pass = $('#nextcloud-pass').val()
+    console.log("Setting up Nextcloud with login and password");
+	wait_for_nextcloud();
+
+    Foris.performBackendQuery(
+        null, "storage", "configure_nextcloud", { credentials: {login: login, password: pass} }
+    ).then(function(data) {
+        location.reload();
+    });
+};
+
+
 $(document).ready(function() {
     $("[name=new_disk]").val(["{{ settings['old_device'].replace("/dev/","") }}"]);
     {% for drv in drives %}
@@ -88,6 +157,9 @@ $(document).ready(function() {
         var c = confirm("{% trans %}Are you sure you want to change where your srv is stored? Newly selected drive will be formated and you will loose all the data on it. Once formating is done, you'll get notification and you will be asked to reboot. On the reboot data will be moved from old drive to the new one. This can take some time so your next reboot will take longer. Are you sure you want to continue?{% endtrans %}");
         return c;
     });
+{% if settings['nextcloud_configured'] and settings['nextcloud_configuring'] %}
+	wait_for_nextcloud();
+{% endif %}
 });
 </script>
 {% endblock %}

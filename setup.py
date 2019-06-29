@@ -20,7 +20,7 @@ class BuildCmd(build_py):
 
 setup(
     name="Foris Storage Plugin",
-    version="1.4",
+    version="1.99",
     description="Storage plugin for foris web interfce",
     author="CZ.NIC, z. s. p. o.",
     author_email="stepan.henek@nic.cz",
