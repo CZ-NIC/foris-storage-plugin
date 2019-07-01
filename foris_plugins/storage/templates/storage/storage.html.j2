@@ -21,7 +21,15 @@
         Device currently in use is {{ old_device_name }} ({{ uuid_text }}).
         {% endtrans %}
     </p>
-    {% else %}
+    {% endif %}
+    {% if settings['old_uuid'] == 'broken' %}
+    <p class="result test-fail">
+        {% trans %}
+        Your setup is currently broken and you are probably loosing data, set a new storage device as soon as you can!
+        {% endtrans %}
+    </p>
+    {% endif %}
+    {% if settings['old_uuid'] != 'broken' and settings['old_uuid'] != 'rootfs'  %}
     <p class="result test-success">
         {% trans old_device_name=settings["old_device_name"], uuid_text='uuid: ' + settings['old_uuid'] %}
         Device currently in use is {{ old_device_name }} ({{ uuid_text }}).
@@ -83,6 +91,9 @@
 <p>{% trans %}You already configured your Nextcloud, you can <a href="/nextcloud/">visit the site</a>.{% endtrans %}</p>
 {% endif %}
 {% else %}
+{% if settings['old_uuid'] == 'broken' or settings['old_uuid'] == 'rootfs'  %}
+<p>{% trans %}To setup Nextcloud, please setup external storage first!{% endtrans %}</p>
+{% else %}
 <p>{% trans %}You still need to configure your Nextcloud, please set your admin credentials bellow:{% endtrans %}</p>
 <table>
 <tr><td style="background: white;">
@@ -98,6 +109,7 @@
 </td></tr>
 </table>
 
+{% endif %}
 {% endif %}
 {% endif %}
 
