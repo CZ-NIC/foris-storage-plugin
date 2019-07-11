@@ -6,10 +6,10 @@
 
 <form action="{{ request.fullpath }}" id="storage-form" method="post" class="config-form">
     <p>
-    {% trans %}Here you can setup where your persistent data should be stored. If you want to use Nextcloud, LXC or other IO intensive applications, don't put them on internal flash, but always use external storage. Also make sure that your data will fit on the new drive before switching.{% endtrans %}
+    {% trans %}Here you can set up where your persistent data should be stored. If you want to use Nextcloud, LXC or other IO-intensive applications, don't put them on internal flash, but always use external storage. Also, make sure that your data will fit on the new drive before switching.{% endtrans %}
     </p>
     <p>
-    {% trans %}Once you choose a drive, it will be formatted to Btrfs filesystem and on next reboot your <em>/srv</em> (directory where all IO intesive applications should reisde) will get moved to this new drive.{% endtrans %}
+    {% trans %}Once you choose a drive, it will be formatted to Btrfs filesystem and on next reboot, your <em>/srv</em> (directory where all IO-intensive applications should reside) will get moved to this new drive.{% endtrans %}
     </p>
     <p>
     {% trans %}Currently only one drive is supported, but in the future it will be possible to extend it to more drives to provide raid functionality. This operation will be possible without loosing any data.{% endtrans %}
