@@ -47,7 +47,7 @@ class StoragePluginPage(ConfigPageMixin, StoragePluginConfigHandler):
             if bottle.request.method != 'POST':
                 raise bottle.HTTPError(404, "Wrong http method (only POST is allowed.")
 
-            data = bottle.request.POST.get('credentials', {})
+            credentials = bottle.request.POST.get('credentials', {})
             data = current_state.backend.perform("storage", "configure_nextcloud", credentials)
             return data
         elif action == 'get_settings':
