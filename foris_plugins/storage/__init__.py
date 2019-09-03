@@ -43,14 +43,7 @@ class StoragePluginPage(ConfigPageMixin, StoragePluginConfigHandler):
         return super(StoragePluginPage, self).render(**kwargs)
 
     def call_ajax_action(self, action):
-        if action == "configure_nextcloud":
-            if bottle.request.method != 'POST':
-                raise bottle.HTTPError(404, "Wrong http method (only POST is allowed.")
-
-            credentials = bottle.request.POST.get('credentials', {})
-            data = current_state.backend.perform("storage", "configure_nextcloud", credentials)
-            return data
-        elif action == 'get_settings':
+        if action == 'get_settings':
             if bottle.request.method != 'GET':
                 raise bottle.HTTPError(404, "Wrong http method (only GET is allowed.")
 
