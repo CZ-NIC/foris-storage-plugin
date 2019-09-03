@@ -18,12 +18,6 @@ class StoragePluginConfigHandler(BaseConfigHandler):
         form = fapi.ForisForm("storage", [])
         form.add_section(name="set_srv", title=self.userfriendly_title)
 
-        def form_cb(data):
-            msg = {"drive": self.data["new_disk"]}
-            current_state.backend.perform("storage", "prepare_srv_drive", msg)
-            return "none", None
-        form.add_callback(form_cb)
-
         return form
 
 

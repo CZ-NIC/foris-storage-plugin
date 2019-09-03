@@ -4,15 +4,11 @@
 <div id="page-sample-plugin" class="config-page">
     {% include '_messages.html.j2' %}
 
-<form action="{{ request.fullpath }}" id="storage-form" method="post" class="config-form">
     <p>
     {% trans %}Here you can set up where your persistent data should be stored. If you want to use Nextcloud, LXC or other IO-intensive applications, don't put them on internal flash, but always use external storage. Also, make sure that your data will fit on the new drive before switching.{% endtrans %}
     </p>
     <p>
     {% trans %}Once you choose a drive, it will be formatted to Btrfs filesystem and on next reboot, your <em>/srv</em> (directory where all IO-intensive applications should reside) will get moved to this new drive.{% endtrans %}
-    </p>
-    <p>
-    {% trans %}Currently only one drive is supported, but in the future it will be possible to extend it to more drives to provide raid functionality. This operation will be possible without loosing any data.{% endtrans %}
     </p>
     <span id="test-results">
     {% if settings['old_uuid'] == 'rootfs' %}
@@ -41,6 +37,12 @@
     <p>
     {% trans %}Processing changes at the moment, please wait...{% endtrans %}
     </p>
+    {% if settings['state'] %}
+    <p>
+    <strong>{% trans %}Current status:{% endtrans %}</strong>
+    {{ settings['state'] }}
+    </p>
+    {% endif %}
     {% endif %}
     {% if drives %}
     <input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
@@ -53,13 +55,13 @@
         </thead>
         <tbody>
             {% for drv in drives %}
-                {% if "/dev/" + drv['dev'] == settings['old_device'] %}
-            <tr class="button" style="display: table-row; height: 1em; line-height: 1em;">
-                {% else %}
-            <tr onClick='$("input[name=new_disk]").val(["{{ drv['dev'] }}"]).change();'>
-                {% endif %}
+            <tr>
                 <td>
-                    <input type="radio" name="new_disk" value="{{ drv['dev'] }}"/>
+                    {% if drv['uuid'] == settings['uuid'] %}
+                    <input type="checkbox" class="disk-checkbox" checked name="{{ drv['dev'] }}"/>
+                    {% else %}
+                    <input type="checkbox" class="disk-checkbox" name="{{ drv['dev'] }}"/>
+                    {% endif %}
                 </td>
                 <td>{{ drv['dev'] }}</td>
                 <td>{{ drv['description'] }}</td>
@@ -73,11 +75,10 @@
     <p>
     {% trans %}Changes to this setting will take effect on next reboot!{% endtrans %}
     </p>
-    <button type="submit" name="send" class="button" style="float:right;">{% trans %}Format &amp; Set{% endtrans %}</button>
-    {% else %}
+    <button onClick="set_drives();" class="button" style="float:right;">{% trans %}Format &amp; Set{% endtrans %}</button>
+    {% elif not settings['formating'] %}
     <p>{% trans %}No drives connected, please connect a drive and refresh the page.{% endtrans %}</p>
     {% endif %}
-</form>
 
 {% if settings['nextcloud_installed'] %}
 <h2>Nextcloud</h2>
@@ -151,6 +152,22 @@ function setup_nextcloud() {
     });
 };
 
+function set_drives() {
+    if(!confirm("{% trans %}Are you sure you want to proceed? Newly selected drive(s) will be formated and you will loose all the data on it. If you are adding the first drive, you'll get notification and you will be asked to reboot. On the reboot data will be moved from old drive to the new one. This can take some time so your next reboot will take longer. Are you sure you want to continue?{% endtrans %}"))
+		return;
+	let disk_boxes = document.getElementsByClassName('disk-checkbox');
+    let disks = [];
+    for(let i=0; i < disk_boxes.length; i++) {
+        if(disk_boxes[i].checked)
+            disks.push(disk_boxes[i].name);
+    }
+
+    Foris.performBackendQuery(
+        null, "storage", "prepare_srv_drive", { drives: disks }
+    ).then(function(data) {
+        location.reload();
+    });
+}
 
 $(document).ready(function() {
     $("[name=new_disk]").val(["{{ settings['old_device'].replace("/dev/","") }}"]);
@@ -165,10 +182,6 @@ $(document).ready(function() {
     $("[name=new_disk]").prop('disabled', true);
     setInterval(function() { location.reload(); }, 10000);
     {% endif %}
-    $('#storage-form').submit(function() {
-        var c = confirm("{% trans %}Are you sure you want to change where your srv is stored? Newly selected drive will be formated and you will loose all the data on it. Once formating is done, you'll get notification and you will be asked to reboot. On the reboot data will be moved from old drive to the new one. This can take some time so your next reboot will take longer. Are you sure you want to continue?{% endtrans %}");
-        return c;
-    });
 {% if settings['nextcloud_configured'] and settings['nextcloud_configuring'] %}
 	wait_for_nextcloud();
 {% endif %}
