@@ -55,6 +55,8 @@ class StoragePluginPage(ConfigPageMixin, StoragePluginConfigHandler):
                 raise bottle.HTTPError(404, "Wrong http method (only GET is allowed.")
 
             data = current_state.backend.perform("storage", "get_settings")
+            nextcloud_data = current_state.backend.perform("nextcloud", "get_status")
+            data.update(nextcloud_data)
             return data
 
         raise ValueError("Unknown AJAX action.")
