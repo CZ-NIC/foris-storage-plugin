@@ -55,22 +55,23 @@
         </thead>
         <tbody>
             {% for drv in drives %}
-            {% if drv['uuid'] == settings['uuid'] and settings['uuid'] %}
-            <tr style="background: #00a2e2;">
-            {% else %}
             <tr>
+            {% if drv['uuid'] == settings['uuid'] and settings['uuid'] %}
+            {%    set tr_style='style="background: #00a2e2; color: white;"' %}
+            {% else %}
+            {%    set tr_style='' %}
             {% endif %}
-                <td>
+                <td {{ tr_style }}>
                     {% if drv['uuid'] == settings['uuid'] and settings['uuid'] %}
                     <input type="checkbox" class="disk-checkbox" checked name="{{ drv['dev'] }}"/>
                     {% else %}
                     <input type="checkbox" class="disk-checkbox" name="{{ drv['dev'] }}"/>
                     {% endif %}
                 </td>
-                <td>{{ drv['dev'] }}</td>
-                <td>{{ drv['description'] }}</td>
-                <td>{{ drv['fs'] }}</td>
-                <td>{{ drv['uuid'] }}</td>
+                <td {{ tr_style }}>{{ drv['dev'] }}</td>
+                <td {{ tr_style }}>{{ drv['description'] }}</td>
+                <td {{ tr_style }}>{{ drv['fs'] }}</td>
+                <td {{ tr_style }}>{{ drv['uuid'] }}</td>
             </tr>
             {% endfor %}
         </tbody>
