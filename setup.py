@@ -23,11 +23,11 @@ setup(
     version="2.0",
     description="Storage plugin for foris web interfce",
     author="CZ.NIC, z. s. p. o.",
-    author_email="stepan.henek@nic.cz",
-    url="https://gitlab.labs.nic.cz/turris/foris/foris-storage-plugin/",
+    author_email="packaging@turris.cz",
+    url="https://gitlab.nic.cz/turris/foris/foris-storage-plugin/",
     license="GPL-3.0",
     install_requires=[
-        "foris @ git+https://gitlab.labs.nic.cz/turris/foris/foris.git#egg=foris",
+        "foris @ git+https://gitlab.nic.cz/turris/foris/foris.git#egg=foris",
     ],
     setup_requires=[
         'babel',
@@ -59,7 +59,7 @@ setup(
         'foris_plugins',
     ],
     dependency_links=[
-        "git+https://gitlab.labs.nic.cz/turris/foris/foris-plugins-distutils.git#egg=foris-plugins-distutils",
+        "git+https://gitlab.nic.cz/turris/foris/foris-plugins-distutils.git#egg=foris-plugins-distutils",
     ],
     cmdclass={
         "build_py": BuildCmd,  # modify build_py to build the foris files as well
