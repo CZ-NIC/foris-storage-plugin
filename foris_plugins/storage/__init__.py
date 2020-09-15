@@ -32,6 +32,14 @@ class StoragePluginPage(ConfigPageMixin, StoragePluginConfigHandler):
         kwargs['settings'] = current_state.backend.perform("storage", "get_settings")
         kwargs['settings']['old_device_name'] = \
             kwargs['settings']["old_device"].replace("/dev/", "")
+
+        available_modules = current_state.backend.perform("introspect", "list_modules")
+        if "nextcloud" in available_modules["modules"]:
+            nextcloud_data = current_state.backend.perform("nextcloud", "get_status")
+            kwargs["settings"]["nextcloud_installed"] = nextcloud_data["nextcloud_installed"]
+            kwargs["settings"]["nextcloud_configured"] = nextcloud_data["nextcloud_configured"]
+            kwargs["settings"]["nextcloud_configuring"] = nextcloud_data["nextcloud_configuring"]
+
         drives = current_state.backend.perform("storage", "get_drives")["drives"]
         kwargs['drives'] = sorted(drives, key=lambda d: d['dev'])
         return super(StoragePluginPage, self).render(**kwargs)
