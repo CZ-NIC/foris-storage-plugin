@@ -151,7 +151,7 @@ function setup_nextcloud() {
 	wait_for_nextcloud();
 
     Foris.performBackendQuery(
-        null, "storage", "configure_nextcloud", { credentials: {login: login, password: pass} }
+        null, "nextcloud", "configure_nextcloud", { credentials: {login: login, password: pass} }
     ).then(function(data) {
         location.reload();
     });
